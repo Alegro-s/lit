@@ -2,8 +2,23 @@ const express = require('express');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
+const fs = require('fs');
+const path = require('path');
 
-dotenv.config();
+const envCandidates = [
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(process.cwd(), '.env.local'),
+  path.resolve(process.cwd(), '.env.example'),
+];
+
+let loadedEnvPath = null;
+for (const envPath of envCandidates) {
+  if (fs.existsSync(envPath)) {
+    dotenv.config({ path: envPath });
+    loadedEnvPath = envPath;
+    break;
+  }
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -98,5 +113,10 @@ app.post('/api/lead', async (req, res) => {
 });
 
 app.listen(PORT, () => {
+  if (!loadedEnvPath) {
+    console.warn('Env file not found (.env or .env.local).');
+  } else {
+    console.log(`Env loaded from: ${loadedEnvPath}`);
+  }
   console.log(`Lead server started on http://localhost:${PORT}`);
 });
