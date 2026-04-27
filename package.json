@@ -2,6 +2,7 @@
   "name": "my_www",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://alegro-s.github.io/lit",
   "dependencies": {
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -27,6 +28,8 @@
     "start:client": "react-scripts start",
     "start:server": "node server/index.js",
     "start:all": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -48,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0"
   }
 }
